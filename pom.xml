@@ -191,13 +191,6 @@
       </dependency>
              
       <dependency>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>sonar-maven-plugin</artifactId>
-        <version>3.2</version>
-        <scope>pom</scope>
-      </dependency>   
-
-      <dependency>
         <groupId>org.hamcrest</groupId>
         <artifactId>hamcrest-core</artifactId>
         <version>1.2.1</version>
