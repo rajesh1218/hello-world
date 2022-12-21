@@ -189,6 +189,13 @@
         <version>4.10</version>
         <scope>test</scope>
       </dependency>
+             
+      <dependency>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.2</version>
+        <scope>pom</scope>
+      </dependency>   
 
       <dependency>
         <groupId>org.hamcrest</groupId>
