@@ -24,14 +24,13 @@ pipeline {
         }
         stage('docker push') {
             steps {
-                script {
-                    sh "mkdir abc"
+                script 
                     sh "docker login -u rajesh1218 -p Anki@1218"
                     sh "docker push rajesh1218/tomcat1218:latest"
                 }
             }
         }
-        stage('deploy tomcat conatiner') {
+        stage('deploy docker conatiner') {
             steps {
                 sshagent(['docker-host']) {
                     sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 43.204.227.220 docker stop mytom'
