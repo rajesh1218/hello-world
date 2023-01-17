@@ -33,6 +33,8 @@ pipeline {
         stage('deploy tomcat conatiner') {
             steps {
                 sshagent(['docker-host']) {
+                    sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 43.204.227.220 docker stop mytom'
+                    sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 43.204.227.220 docker rm mytom'
                     sh "scp -o StrictHostKeyChecking=no webapp/target/webapp.war ec2-user@43.204.227.220:/opt/"
                     sh 'ssh -o StrictHostKeyChecking=no -l ec2-user 43.204.227.220 docker run -itd --name mytom -p 8080:8080 rajesh1218/tomcat1218:latest'
                 }
