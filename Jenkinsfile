@@ -25,6 +25,7 @@ pipeline {
         stage('docker push') {
             steps {
                 script {
+                    sh "mkdir abc"
                     sh "docker login -u rajesh1218 -p Anki@1218"
                     sh "docker push rajesh1218/tomcat1218:latest"
                 }
