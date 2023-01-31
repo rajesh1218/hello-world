@@ -1,5 +1,5 @@
 node {
     stage ('git'){
-        git branch: 'dev', url: 'https://github.com/rajesh1218/hello-world.git'
+        git 'https://github.com/rajesh1218/hello-world.git'
     }
 }
