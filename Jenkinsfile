@@ -11,6 +11,7 @@ pipeline {
                 // Get some code from a GitHub repository
                 git 'https://github.com/rajesh1218/hello-world.git'
                 sh "mvn clean install"
+                sh "pwd"
             }
         }
         stage('docker publish'){
