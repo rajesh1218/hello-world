@@ -8,7 +8,9 @@
 
 name: Java CI with Maven
 
-on: workflow_dispatch
+on: 
+  workflow_call:
+  workflow_dispatch:
 
 jobs:
   build:
