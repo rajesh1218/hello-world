@@ -27,3 +27,8 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Docker Setup Docker
+      uses: docker/setup-docker-action@v4.3.0 
+    - name: docker build
+      run: docker build -t webapp .
+   
