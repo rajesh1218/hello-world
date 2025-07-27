@@ -19,15 +19,10 @@ jobs:
         run: mvn -B package --file pom.xml
       - name: Docker Setup Docker
         uses: docker/setup-docker-action@v4.3.0 
-      - name: docker build
-        run: |
-         docker build -t webapp .
-         docker tag webapp ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:latest
       - name: Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: Docker login to ACR
         uses: azure/docker-login@v1
         with:
@@ -35,7 +30,10 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: docker push
-        run: docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:latest
+        run: |
+          docker build -t webapp .
+          docker tag webapp ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:latest
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:latest
       - name: Deploy to Azure Container Instances
         uses: azure/aci-deploy@v1
         with:
