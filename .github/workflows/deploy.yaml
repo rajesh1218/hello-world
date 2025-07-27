@@ -1,0 +1,48 @@
+name: Deploy Docker Container from ACR
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: Docker Setup Docker
+        uses: docker/setup-docker-action@v4.3.0 
+      - name: docker build
+        run: |
+         docker build -t webapp .
+         docker tag webapp ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:latest
+         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:latest
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Docker login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Deploy to Azure Container Instances
+        uses: azure/aci-deploy@v1
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: myapp-${{ github.run_number }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:latest
+          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: myapp-container
+          location: eastus
