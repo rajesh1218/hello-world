@@ -23,7 +23,6 @@ jobs:
         run: |
          docker build -t webapp .
          docker tag webapp ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:latest
-         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:latest
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -35,6 +34,8 @@ jobs:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: docker push
+        run: docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:latest
       - name: Deploy to Azure Container Instances
         uses: azure/aci-deploy@v1
         with:
